@@ -1,0 +1,104 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LFA Tech Challenge!</title>
+  <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900|Cantata+One' rel='stylesheet' type='text/css'>
+  <link type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <link type="text/css" href="dist/css/style.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <div class="menu">
+    <h2 class="menu-header">Library For All</h2>
+    <ul>
+      <li><a href="#">Home</a>
+      </li>
+      <li><a href="#">Check Outs</a>
+      </li>
+      <li><a href="#">Requests</a>
+      </li>
+      <li><a href="#">Browse Catalog</a>
+      </li>
+    </ul>
+  </div>
+
+  <nav class="nav">
+    <i class="fa fa-bars fa-2x nav-icon" data-bind="click: toggleMenu"></i>
+    <h1 class="nav-header text-center">LFA Catalog</h1>
+    <form class="search" data-bind="submit: search">
+      <select class="search-options" data-bind="options: filterOptions,
+                       optionsText: 'displayName',
+                       value: selectedFilter"></select>
+      <input class="search-bar" type="search" data-bind="value: query" placeholder="Search the catalog" list="autocomplete" autofocus>
+      <button class="search-button" type="submit">
+        <i class="fa fa-search fa-2x"></i>
+      </button>
+
+      <datalist data-bind="foreach: autocomplete" id="autocomplete">
+        <option data-bind="attr: {value: $data}">
+      </datalist>
+
+    </form>
+  </nav>
+  <div class="results" data-bind="css: {'add-top': prevQuery}">
+    <p class="results-msg">
+      Showing <span data-bind="text: filteredCatalog().length"></span> result(s) for "
+      <span data-bind="text: prevQuery"></span>" in "<span data-bind="text: prevFilter">"</span>".
+    </p>
+    <button class="clear-filter green-btn" data-bind="click: clearFilter">Clear</button>
+  </div>
+  <main class="catalog container" data-bind="foreach: formattedCatalog">
+    <div class="row" data-bind="foreach: $data">
+      <div class="book" data-bind="css: $root.colName, attr: {'data-target': idWithHash}, click: $root.showModal">
+        <img class="book-img" data-bind="attr: {src: image}">
+        <p class="book-title" data-bind="text: name"></p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal -->
+  <div data-bind="with: selectedBook">
+    <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-bind="attr: {id: _id}">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title text-center text-uppercase" id="myModalLabel" data-bind="text: name"></h3>
+            <i class="fa fa-close fa-2x close-x" data-dismiss="modal"></i>
+          </div>
+          <div class="modal-body text-center">
+            <img class="modal-img" data-bind="attr: {src: image}">
+            <span class="modal-author-header text-underline">Authors:</span>
+            <br>
+            <ul class="modal-authors" data-bind="foreach: authors">
+              <li data-bind="text: full_name"></li>
+            </ul>
+            <!-- ko if: blurb -->
+            <p class="text-center" data-bind="text: blurb"></p>
+            <!-- /ko -->
+            <!-- ko ifnot: blurb -->
+            <p class="text-center">No summary available.</p>
+            <!-- /ko -->
+          </div>
+          <div class="modal-footer">
+            <button class="modal-btn green-btn">Read!</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.2.0/knockout-min.js"></script>
+  <script src="dist/js/combined.min.js"></script>
+
+</body>
+
+</html>
